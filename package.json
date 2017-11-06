@@ -1,0 +1,16 @@
+{
+  "name": "treemenu.js",
+  "description": "A tree menu for responsive.",
+  "version": "1.4.2",
+  "author": "PSDCenter",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PSDCenter/custom-treeview.git"
+  },
+  "devDependencies": {
+   },
+  "main": "./treemenu.js",
+  "scripts": {
+    "test": "make test"
+  }
+}
