@@ -13,9 +13,10 @@
 	// TODO rewrite as a widget, removing all the extra plugins
 	$.extend($.fn, {
 		swapClass: function(c1, c2) {
+			console.log(c1+","+c2);
 			var c1Elements = this.filter('.' + c1);
-			this.filter('.' + c2).removeClass(c2).addClass(c1);
 			c1Elements.removeClass(c1).addClass(c2);
+			this.filter('.' + c2).removeClass(c2).addClass(c1);
 			return this;
 		},
 		replaceClass: function(c1, c2) {
@@ -57,6 +58,11 @@
 			// return all items with sublists
 			return this.filter(":has(>ul)");
 		},
+		test:function(){
+			this.not(":has(>ul:hidden)")
+							.addClass(CLASSES.collapsable)
+							.replaceClass(CLASSES.last, CLASSES.lastCollapsable);
+		},
 		applyClasses: function(settings, toggler) {
 			// TODO use event delegation
 			this.filter(":has(>ul):not(:has(>a))").find(">span").unbind("click.treeview").bind("click.treeview", function(event) {
@@ -72,10 +78,8 @@
 						.replaceClass(CLASSES.last, CLASSES.lastExpandable);
 
 				// handle open ones
-				this.not(":has(>ul:hidden)")
-						.addClass(CLASSES.collapsable)
-						.replaceClass(CLASSES.last, CLASSES.lastCollapsable);
-
+				// var this=this;
+				
 	            // create hitarea if not present
 				var hitarea = this.find("div." + CLASSES.hitarea);
 				if (!hitarea.length)
@@ -203,22 +207,29 @@
 				});
 				if ( current.length ) {
 					// TODO update the open/closed classes
+					// alert('r')
 					var items = current.addClass("selected").parents("ul, li").add( current.next() ).show();
-					if (settings.prerendered) {
+					console.log(CLASSES.expandable);
+					// alert(settings.prerendereda)
+					if (!settings.prerendered) {
 						// if prerendered is on, replicate the basic class swapping
+						setTimeout(function(){
 						items.filter("li")
 							.swapClass( CLASSES.collapsable, CLASSES.expandable )
 							.swapClass( CLASSES.lastCollapsable, CLASSES.lastExpandable )
 							.find(">.hitarea")
 								.swapClass( CLASSES.collapsableHitarea, CLASSES.expandableHitarea )
 								.swapClass( CLASSES.lastCollapsableHitarea, CLASSES.lastExpandableHitarea );
+						},1000);
 					}
 				}
 				break;
 			}
 
 			branches.applyClasses(settings, toggler);
-
+				setTimeout(function(){
+					branches.test();
+				},1000);
 			// if control option is set, create the treecontroller and show it
 			if ( settings.control ) {
 				treeController(this, settings.control);
