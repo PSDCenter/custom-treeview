@@ -15,8 +15,8 @@
 		swapClass: function(c1, c2) {
 			console.log(c1+","+c2);
 			var c1Elements = this.filter('.' + c1);
-			c1Elements.removeClass(c1).addClass(c2);
 			this.filter('.' + c2).removeClass(c2).addClass(c1);
+			c1Elements.removeClass(c1).addClass(c2);
 			return this;
 		},
 		replaceClass: function(c1, c2) {
@@ -78,6 +78,9 @@
 						.replaceClass(CLASSES.last, CLASSES.lastExpandable);
 
 				// handle open ones
+				this.not(":has(>ul:hidden)")
+							.addClass(CLASSES.collapsable)
+							.replaceClass(CLASSES.last, CLASSES.lastCollapsable);
 				// var this=this;
 				
 	            // create hitarea if not present
