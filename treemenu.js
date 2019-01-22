@@ -1,22 +1,34 @@
 /*
- * Treeview 1.4.2 - jQuery plugin to hide and show branches of a tree
- *
- * http://bassistance.de/jquery-plugins/jquery-plugin-treeview/
- *
- * Copyright Jörn Zaefferer
- * Released under the MIT license:
- *   http://www.opensource.org/licenses/mit-license.php
- */
+ * Treeview 1.4.3 - jQuery plugin to hide and show branches of a tree
+ * Author: PSDCenter
+*/
 
 ;(function($) {
 
 	// TODO rewrite as a widget, removing all the extra plugins
 	$.extend($.fn, {
-		swapClass: function(c1, c2) {
-			console.log(c1+","+c2);
+		swapClass: function(c1, c2, settings) {
+
 			var c1Elements = this.filter('.' + c1);
 			this.filter('.' + c2).removeClass(c2).addClass(c1);
+			if(this.parent().hasClass(CLASSES.expandable)){
+				if(!settings.hitareaImageExpand){
+					this.html("")
+				}else {
+					this.html(settings.hitareaImageExpand)
+				}
+			}
+
+			if(this.parent().hasClass(CLASSES.collapsable)){
+				if(!settings.hitareaImageCollaps){
+					this.html("")
+				}else {
+					this.html(settings.hitareaImageCollaps)
+				}
+			}
+
 			c1Elements.removeClass(c1).addClass(c2);
+
 			return this;
 		},
 		replaceClass: function(c1, c2) {
@@ -82,11 +94,18 @@
 							.addClass(CLASSES.collapsable)
 							.replaceClass(CLASSES.last, CLASSES.lastCollapsable);
 				// var this=this;
-				
+
 	            // create hitarea if not present
 				var hitarea = this.find("div." + CLASSES.hitarea);
 				if (!hitarea.length)
-					hitarea = this.prepend("<div class=\"" + CLASSES.hitarea + "\"/>").find("div." + CLASSES.hitarea);
+
+				hitarea = this.prepend("<div class=\"" + CLASSES.hitarea + "\"/>").find("div." + CLASSES.hitarea);
+				if(settings.hitareaImageCollaps || settings.hitareaImageExpand){
+					if(settings.hitareaImageCollaps!="" || settings.hitareaImageExpand!=""){
+						 hitarea.html(settings.hitareaImageCollaps);
+						 $('body').append('<style>.'+CLASSES.hitarea+':before{ content:none !important; }</style>');
+					}
+				}
 				hitarea.removeClass().addClass(CLASSES.hitarea).each(function() {
 					var classes = "";
 					$.each($(this).parent().attr("class").split(" "), function() {
@@ -140,12 +159,12 @@
 					.parent()
 					// swap classes for hitarea
 					.find(">.hitarea")
-						.swapClass( CLASSES.collapsableHitarea, CLASSES.expandableHitarea )
-						.swapClass( CLASSES.lastCollapsableHitarea, CLASSES.lastExpandableHitarea )
+						.swapClass( CLASSES.collapsableHitarea, CLASSES.expandableHitarea, settings )
+						.swapClass( CLASSES.lastCollapsableHitarea, CLASSES.lastExpandableHitarea, settings )
 					.end()
 					// swap classes for parent li
-					.swapClass( CLASSES.collapsable, CLASSES.expandable )
-					.swapClass( CLASSES.lastCollapsable, CLASSES.lastExpandable )
+					.swapClass( CLASSES.collapsable, CLASSES.expandable, settings )
+					.swapClass( CLASSES.lastCollapsable, CLASSES.lastExpandable, settings )
 					// find child lists
 					.find( ">ul" )
 					// toggle them
@@ -212,17 +231,16 @@
 					// TODO update the open/closed classes
 					// alert('r')
 					var items = current.addClass("selected").parents("ul, li").add( current.next() ).show();
-					console.log(CLASSES.expandable);
 					// alert(settings.prerendereda)
 					if (!settings.prerendered) {
 						// if prerendered is on, replicate the basic class swapping
 						setTimeout(function(){
 						items.filter("li")
-							.swapClass( CLASSES.collapsable, CLASSES.expandable )
-							.swapClass( CLASSES.lastCollapsable, CLASSES.lastExpandable )
+							.swapClass( CLASSES.collapsable, CLASSES.expandable, settings )
+							.swapClass( CLASSES.lastCollapsable, CLASSES.lastExpandable, settings )
 							.find(">.hitarea")
-								.swapClass( CLASSES.collapsableHitarea, CLASSES.expandableHitarea )
-								.swapClass( CLASSES.lastCollapsableHitarea, CLASSES.lastExpandableHitarea );
+								.swapClass( CLASSES.collapsableHitarea, CLASSES.expandableHitarea, settings )
+								.swapClass( CLASSES.lastCollapsableHitarea, CLASSES.lastExpandableHitarea, settings );
 						},1000);
 					}
 				}
