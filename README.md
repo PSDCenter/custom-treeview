@@ -7,6 +7,6 @@ To install through NPM in stencil use following
  $('selector').treeview({
       collapsed: true,
       animated: 'medium',
-      hitareaImageCollaps:'image/svg/text',
-      hitareaImageExpand:'image/svg/text'
+      collapsedArrow:'image/svg/text',
+      expandedArrow:'image/svg/text'
     });
