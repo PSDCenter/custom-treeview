@@ -12,18 +12,18 @@
 			var c1Elements = this.filter('.' + c1);
 			this.filter('.' + c2).removeClass(c2).addClass(c1);
 			if(this.parent().hasClass(CLASSES.expandable)){
-				if(!settings.hitareaImageExpand){
+				if(!settings.expandedArrow){
 					this.html("")
 				}else {
-					this.html(settings.hitareaImageExpand)
+					this.html(settings.expandedArrow)
 				}
 			}
 
 			if(this.parent().hasClass(CLASSES.collapsable)){
-				if(!settings.hitareaImageCollaps){
+				if(!settings.collapsedArrow){
 					this.html("")
 				}else {
-					this.html(settings.hitareaImageCollaps)
+					this.html(settings.collapsedArrow)
 				}
 			}
 
@@ -100,10 +100,9 @@
 				if (!hitarea.length)
 
 				hitarea = this.prepend("<div class=\"" + CLASSES.hitarea + "\"/>").find("div." + CLASSES.hitarea);
-				if(settings.hitareaImageCollaps || settings.hitareaImageExpand){
-					if(settings.hitareaImageCollaps!="" || settings.hitareaImageExpand!=""){
-						 hitarea.html(settings.hitareaImageCollaps);
-						 $('body').append('<style>.'+CLASSES.hitarea+':before{ content:none !important; }</style>');
+				if(settings.collapsedArrow || settings.expandedArrow){
+					if(settings.collapsedArrow!="" || settings.expandedArrow!=""){
+						 hitarea.html(settings.collapsedArrow);
 					}
 				}
 				hitarea.removeClass().addClass(CLASSES.hitarea).each(function() {
